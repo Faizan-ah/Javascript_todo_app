@@ -1,3 +1,55 @@
 ul {
     list-style-type: none;
   }
+
+li {
+    width: 40%;
+    border: 1px solid rgb(197, 188, 188);
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 5px;
+}
+
+label {
+    overflow: scroll;
+    width: 80%;
+    max-height: 70px ;
+    word-wrap:break-word;
+    text-overflow: ellipsis;
+    margin-left: 5px;
+}
+
+label::-webkit-scrollbar {
+    display: none;
+  }
+
+btnDiv {
+    display: flex;
+    flex-direction:row;
+    justify-content: center;
+}
+
+#inputTodo{
+    padding:5px;
+    border-radius: 5px;
+    border: 1px solid rgb(197, 188, 188);
+}
+
+button{
+    padding: 5px;
+    border-radius: 5px;
+    border:1px solid;
+}
+
+#btnTodo{
+    background-color: rgb(64, 212, 64);
+    color:white;
+    /* font-weight: bold; */
+}
+
+.delBtn{
+    background-color: red;
+    color:white
+} 
