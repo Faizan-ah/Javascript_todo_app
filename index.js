@@ -1,13 +1,12 @@
-const todoList = []
 const todoInput = document.getElementById("inputTodo")
 const todoBtn = document.getElementById("btnTodo")
 let labelCountId = 0
+
 //add todo
 const addTodo = (event) => {
     event.preventDefault()
     const todo = todoInput.value.trim()
     if (todo.length) {
-        todoList.push(todo)
         todoInput.value = ""
         displayTodo(todo)
     } else {
@@ -16,10 +15,6 @@ const addTodo = (event) => {
 }
 //delete todo
 const deleteTodo = (value, label) => {
-    const index = todoList.indexOf(value)
-    if (index > -1) {
-        todoList.splice(index, 1);
-    }
     const allTodos = document.querySelectorAll("li")
     allTodos.forEach(todo => {
         const lab = todo.querySelector("label")
@@ -27,6 +22,7 @@ const deleteTodo = (value, label) => {
             todo.remove()
         }
     })
+    updateTodoCounter()
 }
 
 //edit todo
@@ -50,7 +46,12 @@ const displayTodo = (value) => {
     li.appendChild(label)
     li.appendChild(btn)
     todoListEl.appendChild(li)
+    updateTodoCounter()
 }
 
+const updateTodoCounter = () =>{
+    const totalTodos = document.getElementById("totalTodos")
+    totalTodos.innerHTML = document.querySelectorAll("li").length
+}
 //events
 todoBtn.addEventListener('click', addTodo)
