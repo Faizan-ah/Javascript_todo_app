@@ -1,90 +1,110 @@
-const todoInput = document.getElementById("inputTodo")
-const todoBtn = document.getElementById("btnTodo")
-const todoList = []
-let labelCountId = 0
+import {
+  getDataFromLocalStorage,
+  saveDataToLocalStorage,
+} from "./Handlers/storageHandler.js";
 
-//add todo
+const todoInput = document.getElementById("inputTodo");
+const form = document.querySelector("form");
+const searchInput = document.getElementById("searchTodo");
+let todoList = [];
+
+//Add Todo
 const addTodo = (event) => {
-    event.preventDefault()
-    const todo = todoInput.value.trim()
-    if (todo.length) {
-        todoList.push(todo)
-        todoInput.value = ""
-        displayTodo(todo)
-    } else {
-        alert("add a todo item")
-    }
-}
+  event.preventDefault();
+  const todo = todoInput.value.trim();
+  if (todo.length) {
+    const data = {
+      id: crypto.randomUUID(),
+      description: todo,
+      completed: false,
+    };
+    todoList.push(data);
+    saveDataToLocalStorage(todoList);
+    todoInput.value = "";
+    renderTodo();
+  } else {
+    alert("add a todo item");
+  }
+};
 
-//delete todo
-const deleteTodo = (value, label) => {
-    const index = todoList.indexOf(value);
-    if (index > -1) {
-        todoList.splice(index, 1);
-    }
-    const allTodos = document.querySelectorAll("li")
-    allTodos.forEach(todo => {
-        const lab = todo.querySelector("label")
-        if (value === lab.innerHTML && label.id === lab.id) {
-            todo.remove()
-        }
-    })
-    if (todoList.length === 0) {
-        localStorage.removeItem("todoList")
-    } else {
-        localStorage.setItem("todoList", todoList)
-    }
-    updateTodoCounter()
-}
+//Render Todo
+const renderTodo = () => {
+  const oldList = document.querySelector("#todoList");
+  if (oldList) oldList.innerHTML = "";
+  todoList.forEach((todo) => {
+    createList(todo);
+  });
+};
 
-//edit todo
+const createList = (todo) => {
+  let li = document.createElement("li");
 
-//display todo list
-const displayTodo = (value) => {
-    createList(value)
-    localStorage.setItem("todoList", todoList)
-    updateTodoCounter()
-}
+  var checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.checked = todo.completed;
+  checkbox.addEventListener("change", () =>
+    changeCheckboxValue(checkbox, todo)
+  );
 
-const createList = (value) => {
-    const todoListEl = document.getElementById("todoList")
-    let li = document.createElement("li");
-    let label = document.createElement("label");
-    label.setAttribute("id", `label-${++labelCountId}`)
-    label.innerHTML = value
-    var checkbox = document.createElement("input");
-    checkbox.setAttribute("type", "checkbox");
+  let label = document.createElement("label");
+  label.setAttribute("id", `label-${todo.id}`);
+  label.innerHTML = todo.description;
+  label.addEventListener("click", () => changeCheckboxValue(checkbox, todo));
 
-    let btnDiv = document.createElement("btnDiv");
-    btnDiv.setAttribute("class", "btnDiv")
+  let btnDiv = document.createElement("btnDiv");
+  btnDiv.setAttribute("class", "btnDiv");
 
-    const delBtn = document.createElement('button');
-    delBtn.setAttribute("class", "delBtn")
-    delBtn.type = 'button';
-    delBtn.innerHTML = 'Delete';
-    delBtn.style.marginLeft = "10px"
-    delBtn.addEventListener("click", () => deleteTodo(value, label));
+  const delBtn = document.createElement("button");
+  delBtn.setAttribute("class", "delBtn");
+  delBtn.type = "button";
+  delBtn.innerHTML = "Delete";
+  delBtn.style.marginLeft = "10px";
+  delBtn.addEventListener("click", () => deleteTodo(todo));
 
-    li.appendChild(checkbox)
-    li.appendChild(label)
-    btnDiv.appendChild(delBtn)
-    li.appendChild(btnDiv)
-    todoListEl.appendChild(li)
-}
+  li.appendChild(checkbox);
+  li.appendChild(label);
+  btnDiv.appendChild(delBtn);
+  li.appendChild(btnDiv);
+  document.getElementById("todoList").appendChild(li);
+  updateTodoCounter();
+  updateCompletedTodoCounter();
+};
 
+const changeCheckboxValue = (checkbox, todo) => {
+  checkbox.checked = !todo.completed;
+  const todoIndex = todoList.findIndex((obj) => obj.id === todo.id);
+  todoList[todoIndex].completed = !todo.completed;
+  saveDataToLocalStorage(todoList);
+  updateCompletedTodoCounter();
+};
+
+//Delete Todo
+const deleteTodo = (todo) => {
+  todoList = todoList.filter((item) => item.id !== todo.id);
+  renderTodo();
+  saveDataToLocalStorage(todoList);
+  updateTodoCounter();
+  updateCompletedTodoCounter();
+};
+
+//Count Todos
 const updateTodoCounter = () => {
-    const totalTodos = document.getElementById("totalTodos")
-    totalTodos.innerHTML = document.querySelectorAll("li").length
-}
+  const totalTodos = document.getElementById("totalTodos");
+  totalTodos.innerHTML = todoList.length;
+};
 
-//persistant storage
-const persistedTodos = localStorage.getItem("todoList")?.split(",")
-persistedTodos?.forEach(todo => {
-    todoList.push(todo)
-    createList(todo)
-})
+//Count Completed Todos
+const updateCompletedTodoCounter = () => {
+  let completedTodos = document.getElementById("completedTodos");
+  const completedTodoList = todoList.filter((todo) => todo.completed === true);
+  completedTodos.innerHTML = completedTodoList.length;
+};
 
-updateTodoCounter()
+document.addEventListener("DOMContentLoaded", () => {
+  form.addEventListener("submit", addTodo);
 
-//events
-todoBtn.addEventListener('click', addTodo)
+  if (getDataFromLocalStorage()) {
+    todoList = getDataFromLocalStorage();
+  }
+  renderTodo();
+});

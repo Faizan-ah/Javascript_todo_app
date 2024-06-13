@@ -10,15 +10,17 @@
 </head>
 
 <body>
-    <h1>Todo app</h1>
-    <h3>Total todos: <span id="totalTodos">0</span></h3>
+    <h1 class="app-title">Todo app</h1>
+    <h3 class="app-title">Your total todos: <span id="totalTodos">0</span></h3>
+    <h3 class="app-title">Completed todos: <span id="completedTodos">0</span></h3>
+
     <form>
         <input type="text" id="inputTodo" placeholder="Enter a todo"></input>
         <button id="btnTodo" type="submit">Add</button>
     </form>
     <ul id="todoList">
     </ul>
-    <script src="index.js"></script>
+    <script src="index.js" type="module"></script>
 </body>
 
 </html>
