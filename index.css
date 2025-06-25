@@ -49,7 +49,7 @@ form {
 }
 
 input[type="text"] {
-  flex: 1;
+  /* flex: 1; */
   padding: 14px 16px;
   border: none;
   border-radius: 8px;
@@ -58,6 +58,16 @@ input[type="text"] {
   background-color: #1e1e2f;
   color: #fff;
   box-shadow: 0 0 8px #00f7ff33;
+}
+
+#inputTodo {
+  width: 100%;
+  max-width: 600px;
+}
+
+#searchTodo {
+  width: 100%;
+  max-width: 600px;
 }
 
 button {
@@ -83,19 +93,6 @@ ul {
   max-width: 600px;
   margin-top: 20px;
 }
-
-/* li {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid #ffffff11;
-  padding: 12px 16px;
-  border-radius: 12px;
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  backdrop-filter: blur(5px);
-  box-shadow: 0 0 6px #00f7ff33;
-} */
 
 li {
   background: rgba(255, 255, 255, 0.05);
@@ -141,4 +138,33 @@ label {
 
 .delBtn:hover {
   background-color: #e60000;
+}
+
+.editBtn {
+  background: #00f7ff;
+  color: black;
+  border: none;
+  border-radius: 6px;
+  margin: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s ease;
+  box-shadow: 0 0 10px #ff3c3c55;
+}
+
+.edit-input {
+  flex: 1;
+  padding: 6px;
+  font-size: 16px;
+  background: #1e1e2f;
+  color: white;
+  border: 1px solid #00f7ff33;
+  border-radius: 6px;
+}
+
+.no-todo-message {
+  text-align: center;
+  color: #888;
+  margin-top: 1rem;
 }
