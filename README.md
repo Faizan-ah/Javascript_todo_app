@@ -2,7 +2,7 @@
 
 This project aims to build a to do list application by applying HTML, CSS and Javascript.  The application allows users to manage their tasks effectively.
 
-**Link:** [Todo App](https://todo-app-ten-nu-30.vercel.app/)
+**Link:** [Todo App](https://faizans-todo-app.vercel.app/)
 
 **Basic**
 - [x] Adding a Todo
